@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -13,13 +13,33 @@ export class AppComponent {
   includeNumbers=false;
   includeSymbols=false;
   password='';
+  length=0;
 
   OnButtonClick()
   {
-    console.log(this.includeLetters);
-    console.log(this.includeNumbers);
-    console.log(this.includeSymbols);
-    this.password="MY Password!!!";
+   const numbers='1234567890';
+   const letters='abcdefghijklmnopqrstuvwxyz';
+   const symbols='!@#$%^&*()';
+    let validChar='';
+    if(this.includeLetters)
+    {
+      validChar +=letters;
+    }
+    if(this.includeNumbers)
+    {
+      validChar +=numbers;
+    }
+    if(this.includeSymbols)
+    {
+      validChar +=symbols;
+    }
+    let generatedPassword='';
+    for(let i=0;i<this.length;i++)
+    {
+      const index=Math.floor(Math.random()*validChar.length);
+      generatedPassword +=validChar[index];
+    }
+    this.password=generatedPassword;
   }
 
   onChangeUseLetters()
@@ -33,5 +53,14 @@ export class AppComponent {
   onChangeUseSymbols()
   {
     this.includeSymbols =!this.includeSymbols;
+  }
+
+  onChangeLength(value:string)
+  {
+    const parseValue=parseInt(value);
+    if(!isNaN(parseValue))
+    {
+      this.length=parseValue;
+    }
   }
 }
